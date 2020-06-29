@@ -30,9 +30,14 @@ public class App extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        final int BOARD_SIZE = 800;
+        final int BOARD_SIZE = 600;
         Group root = new Group();
         Scene scene = new Scene(root, BOARD_SIZE, BOARD_SIZE, Color.BLACK);
+
+        // Add chess board
+        Board board = new Board(BOARD_SIZE);
+        root.getChildren().add(board);
+
         primaryStage.setScene(scene);
         primaryStage.show();
     }
