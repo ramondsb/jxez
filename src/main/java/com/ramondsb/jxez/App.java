@@ -16,12 +16,28 @@
 
 package com.ramondsb.jxez;
 
-public class App {
-    public String getGreeting() {
-        return "Hello world.";
-    }
+import javafx.application.Application;
+import javafx.scene.Group;
+import javafx.scene.Scene;
+import javafx.scene.paint.Color;
+import javafx.stage.Stage;
+
+public class App extends Application {
 
     public static void main(String[] args) {
-        System.out.println(new App().getGreeting());
+        launch(args);
+    }
+
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+        final int BOARD_SIZE = 800;
+        Group root = new Group();
+        Scene scene = new Scene(root, BOARD_SIZE, BOARD_SIZE, Color.BLACK);
+        primaryStage.setScene(scene);
+        primaryStage.show();
+    }
+
+    public String getGreeting() {
+        return "Hello world.";
     }
 }
