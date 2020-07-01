@@ -18,11 +18,13 @@ package com.ramondsb.jxez;
 
 import javafx.scene.image.Image;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 
 public class Square extends Region {
 
     private final ColorType colorType;
-    private final float size;
+    private final boolean isDebugMode = false;
+    public float size;
 
     public enum ColorType {
         DARK,
@@ -33,6 +35,7 @@ public class Square extends Region {
         super();
         this.colorType = type;
         this.size = size;
+        //this.setManaged(true);
 
         Image image = null;
         if (this.colorType == ColorType.DARK) {
@@ -50,10 +53,20 @@ public class Square extends Region {
         );
 
         Background background = new Background(backgroundImage);
-
+        if (isDebugMode) {
+            this.setBorder(
+                    new Border(
+                            new BorderStroke(
+                                    Color.RED,
+                                    BorderStrokeStyle.SOLID,
+                                    null,
+                                    BorderWidths.DEFAULT)
+                    )
+            );
+        }
         this.setBackground(background);
-        this.setMinWidth(this.size);
-        this.setMinHeight(this.size);
+        this.setPrefHeight(this.size);
+        this.setPrefWidth(this.size);
     }
 
     @Override
@@ -64,5 +77,10 @@ public class Square extends Region {
     @Override
     protected double computePrefWidth(double height) {
         return super.computePrefWidth(this.size);
+    }
+
+    @Override
+    public void resize(double width, double height) {
+        super.resize(this.size, this.size);
     }
 }

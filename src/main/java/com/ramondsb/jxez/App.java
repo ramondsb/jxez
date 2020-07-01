@@ -17,8 +17,11 @@
 package com.ramondsb.jxez;
 
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.scene.Group;
 import javafx.scene.Scene;
+import javafx.scene.SceneAntialiasing;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 
@@ -30,13 +33,16 @@ public class App extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        final int BOARD_SIZE = 600;
-        Group root = new Group();
-        Scene scene = new Scene(root, BOARD_SIZE, BOARD_SIZE, Color.BLACK);
 
-        // Add chess board
+        final int BOARD_SIZE = 600;
         Board board = new Board(BOARD_SIZE);
-        root.getChildren().add(board);
+        Scene scene = new Scene(board,
+                BOARD_SIZE,
+                BOARD_SIZE,
+                Color.BLACK);
+
+        primaryStage.minWidthProperty().bind(scene.heightProperty().multiply(1.0));
+        primaryStage.minHeightProperty().bind(scene.widthProperty().divide(1.0));
 
         primaryStage.setScene(scene);
         primaryStage.show();

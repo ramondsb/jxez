@@ -16,15 +16,38 @@
 
 package com.ramondsb.jxez;
 
-import javafx.scene.layout.Region;
+import javafx.collections.ObservableList;
+import javafx.scene.Group;
+import javafx.scene.Node;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
 
 public class Board extends Region {
-    private final float squareSize;
+    private float squareSize;
     float boardSize;
     private final int NUMBER_OF_ROWS = 8;
     private final int NUMBER_OF_FILES = 8;
+    Group container = null;
+    private final boolean isDebugMode = false;
 
     public Board(float boardSize) {
+
+        this.container = new Group();
+
+        if (isDebugMode) {
+            this.setBorder(
+                new Border(
+                    new BorderStroke(
+                        Color.WHITE,
+                        BorderStrokeStyle.SOLID,
+                        null,
+                        BorderWidths.DEFAULT
+                    )
+                )
+            );
+        }
+
         this.boardSize = boardSize;
         this.squareSize = this.boardSize / NUMBER_OF_FILES;
 
@@ -36,9 +59,17 @@ public class Board extends Region {
                 square.setLayoutX(this.squareSize * i);
                 square.setLayoutY(this.squareSize * j);
                 square.setId(makeId(i, j));
-                this.getChildren().add(square);
+                square.setOnMouseClicked(event -> {
+                    if (MouseEvent.MOUSE_CLICKED == event.getEventType() ) {
+                        System.out.println("Square with id: " +  square.getId());
+                    }
+                });
+
+                container.getChildren().add(square);
             }
         }
+
+        this.getChildren().add(container);
     }
 
     @Override
@@ -53,5 +84,28 @@ public class Board extends Region {
 
     private String makeId(int x, int y) {
         return x + "-" + y;
+    }
+
+    @Override
+    protected void layoutChildren() {
+        ObservableList<Node> children = this.container.getChildren();
+        for (int i=0, max= children.size(); i<max; i++) {
+            final Node node = children.get(i);
+            if (node.isResizable() && node.isManaged()) {
+                ((Square)(node)).size = this.squareSize;
+                node.autosize();
+                String id = node.getId();
+                int x = Integer.parseInt(id.split("-")[0]);
+                int y = Integer.parseInt(id.split("-")[1]);
+                node.relocate(x * this.squareSize, y * this.squareSize);
+            }
+        }
+    }
+
+    @Override
+    public void resize(double width, double height) {
+        super.resize(width, height);
+        this.boardSize = (float)width;
+        this.squareSize = this.boardSize / 8;
     }
 }
