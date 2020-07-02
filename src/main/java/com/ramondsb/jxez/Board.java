@@ -65,13 +65,41 @@ public class Board extends Region {
                     }
                 });
 
-                container.getChildren().add(square);
+               container.getChildren().add(square);
             }
         }
+
+        // Set pieces
+        // Create white king
+        Piece k1 = new Piece(Piece.PieceType.KING, 0, 0);
+        Piece k2 = new Piece(Piece.PieceType.KING, 0, 0);
+        Piece k3 = new Piece(Piece.PieceType.KING, 0, 0);
+        // Place at board
+        this.container.getChildren().addAll(k1, k2, k3);
+
+        int squareW = 75;
+        int pieceW = 50;
+        int x = 0 + (squareW / 2) - (pieceW / 2);
+        int y = 0 + (squareW / 2) - (pieceW / 2);
+        //wKing.relocate(x, y);
+
+        setPieceAtPosition( k1,3,3);
+
+        setPieceAtPosition( k2,0,0);
+        setPieceAtPosition( k3,7,7);
 
         this.getChildren().add(container);
     }
 
+    private void setPieceAtPosition(Piece piece, int row, int column) {
+        double baseX = column * this.squareSize;
+        double baseY = row * this.squareSize;
+        double newX = baseX + (this.squareSize / 2) - (piece.size / 2);
+        double newY = baseY + (this.squareSize / 2) - (piece.size / 2);
+        piece.row = row;
+        piece.column = column;
+        piece.relocate(newX, newY);
+    }
     @Override
     protected double computePrefHeight(double width) {
         return super.computePrefHeight(this.boardSize);
@@ -91,13 +119,20 @@ public class Board extends Region {
         ObservableList<Node> children = this.container.getChildren();
         for (int i=0, max= children.size(); i<max; i++) {
             final Node node = children.get(i);
+
             if (node.isResizable() && node.isManaged()) {
-                ((Square)(node)).size = this.squareSize;
-                node.autosize();
-                String id = node.getId();
-                int x = Integer.parseInt(id.split("-")[0]);
-                int y = Integer.parseInt(id.split("-")[1]);
-                node.relocate(x * this.squareSize, y * this.squareSize);
+                if (node instanceof Square) {
+                    ((Square) (node)).size = this.squareSize;
+                    node.autosize();
+                    String id = node.getId();
+                    int x = Integer.parseInt(id.split("-")[0]);
+                    int y = Integer.parseInt(id.split("-")[1]);
+                    node.relocate(x * this.squareSize, y * this.squareSize);
+                } else if (node instanceof Piece) {
+                    Piece p = (Piece)node;
+                    p.size = this.squareSize * 0.75;
+                    setPieceAtPosition(p, p.column, p.row);
+                }
             }
         }
     }
