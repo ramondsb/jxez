@@ -46,15 +46,17 @@ public class Piece extends Region {
 
         Image image = getRepresentationImage(type, color);
 
-        this.setBorder(
-                new Border(
-                        new BorderStroke(
-                                Color.BLUE,
-                                BorderStrokeStyle.SOLID,
-                                null,
-                                BorderWidths.DEFAULT)
-                )
-        );
+        if (Game.isDebugMode) {
+            this.setBorder(
+                    new Border(
+                            new BorderStroke(
+                                    Color.BLUE,
+                                    BorderStrokeStyle.SOLID,
+                                    null,
+                                    BorderWidths.DEFAULT)
+                    )
+            );
+        }
 
         BackgroundImage backgroundImage = new BackgroundImage(
                 image,

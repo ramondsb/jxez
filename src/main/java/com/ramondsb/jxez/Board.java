@@ -34,14 +34,14 @@ public class Board extends Region {
     private final int NUMBER_OF_ROWS = 8;
     private final int NUMBER_OF_FILES = 8;
     Group container = null;
-    private final boolean isDebugMode = false;
+
     public Piece selectedPiece = null;
 
     public Board(float boardSize) {
 
         this.container = new Group();
 
-        if (isDebugMode) {
+        if (Game.isDebugMode) {
             this.setBorder(
                 new Border(
                     new BorderStroke(

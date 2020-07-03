@@ -23,7 +23,6 @@ import javafx.scene.paint.Color;
 public class Square extends Region {
 
     private final ColorType colorType;
-    private final boolean isDebugMode = false;
     public float size;
 
     public enum ColorType {
@@ -35,7 +34,6 @@ public class Square extends Region {
         super();
         this.colorType = type;
         this.size = size;
-        //this.setManaged(true);
 
         Image image = null;
         if (this.colorType == ColorType.DARK) {
@@ -53,7 +51,7 @@ public class Square extends Region {
         );
 
         Background background = new Background(backgroundImage);
-        if (isDebugMode) {
+        if (Game.isDebugMode) {
             this.setBorder(
                     new Border(
                             new BorderStroke(
