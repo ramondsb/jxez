@@ -21,5 +21,6 @@ public class Game {
         BLACK,
         WHITE
     }
+
     public static final boolean isDebugMode = false;
 }

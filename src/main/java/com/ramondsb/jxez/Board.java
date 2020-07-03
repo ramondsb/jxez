@@ -99,25 +99,28 @@ public class Board extends Region {
      * Place all pieces at initial position
      */
     private void setupPieces() {
+        final int numberOfPaws = 8;
+        final int indexOfLastRow = 0;
+        final int indexOfFirstRow = 7;
         // Paws
-        for (int i =0; i < 8; i++) {
+        for (int i =0; i < numberOfPaws; i++) {
             addPiece(PAWN, BLACK, 1, i);
             addPiece(PAWN, WHITE, 6, i);
         }
 
         // Rooks
-        addPiece(ROOK, WHITE, 7, 0);
-        addPiece(ROOK, WHITE, 7, 7);
+        addPiece(ROOK, WHITE, indexOfFirstRow, 0);
+        addPiece(ROOK, WHITE, indexOfFirstRow, 7);
 
         addPiece(ROOK, BLACK, 0, 0);
         addPiece(ROOK, BLACK, 0, 7);
 
         // Bishops
-        addPiece(BISHOP, WHITE, 7, 2);
-        addPiece(BISHOP, WHITE, 7, 5);
+        addPiece(BISHOP, WHITE, indexOfFirstRow, 2);
+        addPiece(BISHOP, WHITE, indexOfFirstRow, 5);
 
-        addPiece(BISHOP, BLACK, 0, 2);
-        addPiece(BISHOP, BLACK, 0, 5);
+        addPiece(BISHOP, BLACK, indexOfLastRow, 2);
+        addPiece(BISHOP, BLACK, indexOfLastRow, 5);
 
         // Knights
         addPiece(KNIGHT, WHITE, 7, 1);
