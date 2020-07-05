@@ -17,27 +17,37 @@
 package com.ramondsb.jxez;
 
 import javafx.collections.ObservableList;
+import javafx.event.Event;
 import javafx.scene.Group;
 import javafx.scene.Node;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 
+import java.beans.EventHandler;
+
 import static com.ramondsb.jxez.Game.Color.BLACK;
 import static com.ramondsb.jxez.Game.Color.WHITE;
 import static com.ramondsb.jxez.Piece.PieceType.*;
 
 
-public class Board extends Region {
+public class Board extends Region implements javafx.event.EventHandler {
     private float squareSize;
     float boardSize;
     private final int NUMBER_OF_ROWS = 8;
     private final int NUMBER_OF_FILES = 8;
     Group container = null;
+    EventHandler eventHandler;
 
     public Piece selectedPiece = null;
+    public Game.Color playerTurn = null;
+    public Piece attackedPiece = null;
+    private Game.Color currentTurn;
 
     public Board(float boardSize) {
+        // Initialization
+        playerTurn = WHITE;
+        currentTurn = WHITE;
 
         this.container = new Group();
 
@@ -70,9 +80,10 @@ public class Board extends Region {
                         System.out.println("Square with id: " + square.getId());
                         int x = Integer.parseInt(square.getId().split("-")[0]);
                         int y = Integer.parseInt(square.getId().split("-")[1]);
-                        if (selectedPiece != null) {
-                            this.setPieceAtPosition(this.selectedPiece, y, x);
-                        }
+//                        if (selectedPiece != null) {
+//                            this.setPieceAtPosition(this.selectedPiece, y, x);
+//                        }
+                        onSquareClicked(square, x, y);
                     }
                 });
 
@@ -86,14 +97,18 @@ public class Board extends Region {
 
     private void addPiece(Piece.PieceType type, Game.Color color, int row, int column) {
         Piece piece = new Piece(type, color, row, column);
+        piece.setId(makeId(row, column));
         this.container.getChildren().add(piece);
         piece.setOnMouseClicked(event -> {
             if (MouseEvent.MOUSE_CLICKED == event.getEventType() ) {
-                this.selectedPiece = piece;
+                onPieceClicked(piece);
+
             }
         });
         this.setPieceAtPosition(piece, row, column);
     }
+
+
 
     /**
      * Place all pieces at initial position
@@ -189,5 +204,63 @@ public class Board extends Region {
         super.resize(width, height);
         this.boardSize = (float)width;
         this.squareSize = this.boardSize / 8;
+    }
+
+    @Override
+    public void handle(Event event) {
+//        if (event.getEventType() == MouseEvent.MOUSE_CLICKED) {
+//            onSquareClicked(square, x, y);
+//            event.consume();
+//        }
+    }
+
+    private void onSquareClicked(Square square, int x, int y) {
+        // Is a piece click
+        //   is own player piece
+        //       if is then select it
+        //   is oponent piece
+                 // takePiece
+        // Is a square click
+        //   is occupied
+        //   is empty
+
+        if (selectedPiece != null) {
+            // Move
+            this.setPieceAtPosition(this.selectedPiece, y, x);
+            nextTurn();
+        }
+    }
+
+    private void onPieceClicked(Piece piece) {
+        if (piece.getColor() == currentTurn) {
+            // Select piece
+            this.selectedPiece = piece;
+            //nextTurn();
+        } else {
+            // Attack piece
+            // replace
+            if (selectedPiece != null) {
+                if (replacePiece(piece)) {
+                    nextTurn();
+                }
+            }
+        }
+    }
+
+    private boolean replacePiece(Piece attackedPiece) {
+        this.attackedPiece = attackedPiece;
+        // Get position
+        Coord pos = attackedPiece.getCoord();
+        // Remove attacked piece
+        this.container.getChildren().remove(attackedPiece);
+        // Move attacking pice to position
+        setPieceAtPosition(selectedPiece, pos.getRow(), pos.getColumn());
+        return true;
+    }
+
+    private void nextTurn() {
+        // Unselect piece
+        selectedPiece = null;
+        currentTurn = currentTurn == WHITE ? BLACK : WHITE;
     }
 }

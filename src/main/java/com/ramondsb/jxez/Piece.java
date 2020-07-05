@@ -27,6 +27,19 @@ public class Piece extends Region {
     int column;
     double size = 50;
 
+    public Game.Color getColor() {
+        return color;
+    }
+
+    public void setCoord(int x, int y) {
+        row = x;
+        column = y;
+    }
+
+    public Coord getCoord() {
+        return new Coord(row, column);
+    }
+
     public enum PieceType {
         KING,
         PAWN,
