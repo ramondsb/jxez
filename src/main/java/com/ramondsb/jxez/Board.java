@@ -29,16 +29,19 @@ import static com.ramondsb.jxez.Piece.PieceType.*;
 
 
 public class Board extends Region {
-    private float squareSize;
-    float boardSize;
     private final int NUMBER_OF_ROWS = 8;
     private final int NUMBER_OF_FILES = 8;
-    Group container = null;
-
-    public Piece selectedPiece = null;
+    private float squareSize;
+    private float boardSize;
+    private Group container;
+    public Piece selectedPiece;
+    public Game.Color playerTurn;
+    public Piece attackedPiece;
+    private Game.Color currentTurn;
 
     public Board(float boardSize) {
-
+        this.playerTurn = WHITE;
+        this.currentTurn = WHITE;
         this.container = new Group();
 
         if (Game.isDebugMode) {
@@ -58,6 +61,7 @@ public class Board extends Region {
         this.squareSize = this.boardSize / NUMBER_OF_FILES;
 
         // Set squares
+        // TODO: Move to method
         for (int i = 0; i < NUMBER_OF_ROWS; i++) {
             for (int j = 0; j < NUMBER_OF_FILES; j++) {
                 Square.ColorType type = (i % 2 == j % 2) ? Square.ColorType.LIGHT : Square.ColorType.DARK;
@@ -67,12 +71,9 @@ public class Board extends Region {
                 square.setId(makeId(i, j));
                 square.setOnMouseClicked(event -> {
                     if (MouseEvent.MOUSE_CLICKED == event.getEventType() ) {
-                        System.out.println("Square with id: " + square.getId());
                         int x = Integer.parseInt(square.getId().split("-")[0]);
                         int y = Integer.parseInt(square.getId().split("-")[1]);
-                        if (selectedPiece != null) {
-                            this.setPieceAtPosition(this.selectedPiece, y, x);
-                        }
+                        onSquareClicked(square, x, y);
                     }
                 });
 
@@ -86,18 +87,17 @@ public class Board extends Region {
 
     private void addPiece(Piece.PieceType type, Game.Color color, int row, int column) {
         Piece piece = new Piece(type, color, row, column);
+        piece.setId(makeId(row, column));
         this.container.getChildren().add(piece);
         piece.setOnMouseClicked(event -> {
             if (MouseEvent.MOUSE_CLICKED == event.getEventType() ) {
-                this.selectedPiece = piece;
+                onPieceClicked(piece);
+
             }
         });
         this.setPieceAtPosition(piece, row, column);
     }
 
-    /**
-     * Place all pieces at initial position
-     */
     private void setupPieces() {
         // Paws
         for (int i =0; i < 8; i++) {
@@ -133,7 +133,6 @@ public class Board extends Region {
         // Kings
         addPiece(KING, WHITE, 7, 4);
         addPiece(KING, BLACK, 0, 4);
-
     }
 
     private void setPieceAtPosition(Piece piece, int row, int column) {
@@ -147,6 +146,46 @@ public class Board extends Region {
         piece.setLayoutY(newY);
     }
 
+    private String makeId(int x, int y) {
+        return x + "-" + y;
+    }
+
+    private void onSquareClicked(Square square, int x, int y) {
+        if (selectedPiece != null) {
+            this.setPieceAtPosition(this.selectedPiece, y, x);
+            nextTurn();
+        }
+    }
+
+    private void onPieceClicked(Piece piece) {
+        if (piece.getColor() == currentTurn) {
+            this.selectedPiece = piece;
+        } else {
+            if (selectedPiece != null) {
+                if (replacePiece(piece)) {
+                    nextTurn();
+                }
+            }
+        }
+    }
+
+    private boolean replacePiece(Piece attackedPiece) {
+        this.attackedPiece = attackedPiece;
+        // Get position
+        Coordinate pos = attackedPiece.getCoordinate();
+        // Remove attacked piece
+        this.container.getChildren().remove(attackedPiece);
+        // Move attacking pice to position
+        setPieceAtPosition(selectedPiece, pos.getRow(), pos.getColumn());
+        return true;
+    }
+
+    private void nextTurn() {
+        // Unselect piece
+        selectedPiece = null;
+        currentTurn = currentTurn == WHITE ? BLACK : WHITE;
+    }
+
     @Override
     protected double computePrefHeight(double width) {
         return super.computePrefHeight(this.boardSize);
@@ -157,14 +196,10 @@ public class Board extends Region {
         return super.computePrefWidth(this.boardSize);
     }
 
-    private String makeId(int x, int y) {
-        return x + "-" + y;
-    }
-
     @Override
     protected void layoutChildren() {
         ObservableList<Node> children = this.container.getChildren();
-        for (int i=0, max= children.size(); i<max; i++) {
+        for (int i = 0, max = children.size(); i < max; i++) {
             final Node node = children.get(i);
 
             if (node.isResizable() && node.isManaged()) {

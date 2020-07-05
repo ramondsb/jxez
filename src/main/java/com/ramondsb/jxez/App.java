@@ -23,22 +23,27 @@ import javafx.stage.Stage;
 
 public class App extends Application {
 
+    private final int BOARD_SIZE = 600;
+
     public static void main(String[] args) {
         launch(args);
     }
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-
-        final int BOARD_SIZE = 600;
         Board board = new Board(BOARD_SIZE);
         Scene scene = new Scene(board,
                 BOARD_SIZE,
                 BOARD_SIZE,
                 Color.BLACK);
 
-        primaryStage.minWidthProperty().bind(scene.heightProperty().multiply(1.0));
-        primaryStage.minHeightProperty().bind(scene.widthProperty().divide(1.0));
+        final double equalFactor = 1.0;
+        primaryStage
+                .minWidthProperty()
+                .bind(scene.heightProperty().multiply(equalFactor));
+        primaryStage
+                .minHeightProperty()
+                .bind(scene.widthProperty().divide(equalFactor));
 
         primaryStage.setScene(scene);
         primaryStage.show();

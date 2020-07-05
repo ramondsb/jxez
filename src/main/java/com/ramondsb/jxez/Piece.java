@@ -27,6 +27,19 @@ public class Piece extends Region {
     int column;
     double size = 50;
 
+    public Game.Color getColor() {
+        return color;
+    }
+
+    public void setCoord(int x, int y) {
+        row = x;
+        column = y;
+    }
+
+    public Coordinate getCoordinate() {
+        return new Coordinate(row, column);
+    }
+
     public enum PieceType {
         KING,
         PAWN,
@@ -40,7 +53,7 @@ public class Piece extends Region {
         this.row = row;
         this.column = column;
         this.color = color;
-        pieceType = type;
+        this.pieceType = type;
         this.setPrefHeight(50);
         this.setPrefWidth(50);
 
@@ -74,16 +87,6 @@ public class Piece extends Region {
 
         Background background = new Background(backgroundImage);
         this.setBackground(background);
-    }
-
-    @Override
-    protected double computePrefWidth(double height) {
-        return super.computePrefWidth(this.size);
-    }
-
-    @Override
-    public void resize(double width, double height) {
-        super.resize(this.size, this.size);
     }
 
     private Image getRepresentationImage(PieceType type, Game.Color color) {
@@ -136,5 +139,15 @@ public class Piece extends Region {
                 image = new Image("images/b_king_png_128px.png", 50, 50, true, false);
         }
         return image;
+    }
+
+    @Override
+    protected double computePrefWidth(double height) {
+        return super.computePrefWidth(this.size);
+    }
+
+    @Override
+    public void resize(double width, double height) {
+        super.resize(this.size, this.size);
     }
 }
