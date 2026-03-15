@@ -19,7 +19,6 @@ package com.ramondsb.jxez;
 import javafx.collections.ObservableList;
 import javafx.scene.Group;
 import javafx.scene.Node;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 
@@ -68,11 +67,9 @@ public class Board extends Region {
                 square.setLayoutY(this.squareSize * j);
                 square.setId(makeId(i, j));
                 square.setOnMouseClicked(event -> {
-                    if (MouseEvent.MOUSE_CLICKED == event.getEventType() ) {
-                        int x = Integer.parseInt(square.getId().split("-")[0]);
-                        int y = Integer.parseInt(square.getId().split("-")[1]);
-                        onSquareClicked(square, x, y);
-                    }
+                    int x = Integer.parseInt(square.getId().split("-")[0]);
+                    int y = Integer.parseInt(square.getId().split("-")[1]);
+                    onSquareClicked(square, x, y);
                 });
 
                container.getChildren().add(square);
@@ -87,12 +84,7 @@ public class Board extends Region {
         Piece piece = new Piece(type, color, row, column);
         piece.setId(makeId(row, column));
         this.container.getChildren().add(piece);
-        piece.setOnMouseClicked(event -> {
-            if (MouseEvent.MOUSE_CLICKED == event.getEventType() ) {
-                onPieceClicked(piece);
-
-            }
-        });
+        piece.setOnMouseClicked(event -> onPieceClicked(piece));
         this.setPieceAtPosition(piece, row, column);
     }
 
