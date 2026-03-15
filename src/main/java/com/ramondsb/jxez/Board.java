@@ -34,13 +34,11 @@ public class Board extends Region {
     private float squareSize;
     private float boardSize;
     private Group container;
-    public Piece selectedPiece;
-    public Game.Color playerTurn;
+    private Piece selectedPiece;
     public Piece attackedPiece;
     private Game.Color currentTurn;
 
     public Board(float boardSize) {
-        this.playerTurn = WHITE;
         this.currentTurn = WHITE;
         this.container = new Group();
 
