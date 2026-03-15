@@ -1,11 +1,17 @@
-# Ignore Gradle project-specific cache directory
-.gradle
+# Maven
+target/
 
-# Ignore Gradle build output directory
-build
+# IDEs
+.idea/
+*.iml
+.vscode/
+*.classpath
+*.project
+.settings/
 
-# Ignore Intellij Idea config directory
-.idea
+# OS
+.DS_Store
+Thumbs.db
 
 # Todo files
 todo.org
