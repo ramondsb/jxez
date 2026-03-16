@@ -57,7 +57,7 @@ public class Piece extends Region {
         this.setPrefHeight(50);
         this.setPrefWidth(50);
 
-        Image image = getRepresentationImage(type, color);
+        Image image = getRepresentationImage();
 
         if (Game.isDebugMode) {
             this.setBorder(
@@ -89,7 +89,7 @@ public class Piece extends Region {
         this.setBackground(background);
     }
 
-    private Image getRepresentationImage(PieceType type, Game.Color color) {
+    private Image getRepresentationImage() {
         Image image = null;
         switch (this.pieceType) {
             case KING:
