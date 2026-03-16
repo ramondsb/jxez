@@ -31,11 +31,6 @@ public class Piece extends Region {
         return color;
     }
 
-    public void setCoord(int x, int y) {
-        row = x;
-        column = y;
-    }
-
     public Coordinate getCoordinate() {
         return new Coordinate(row, column);
     }
