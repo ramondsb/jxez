@@ -67,8 +67,9 @@ public class Board extends Region {
                 square.setLayoutY(this.squareSize * j);
                 square.setId(makeId(i, j));
                 square.setOnMouseClicked(event -> {
-                    int x = Integer.parseInt(square.getId().split("-")[0]);
-                    int y = Integer.parseInt(square.getId().split("-")[1]);
+                    String[] parts = square.getId().split("-");
+                    int x = Integer.parseInt(parts[0]);
+                    int y = Integer.parseInt(parts[1]);
                     onSquareClicked(square, x, y);
                 });
 
@@ -196,9 +197,9 @@ public class Board extends Region {
                 if (node instanceof Square) {
                     ((Square) (node)).size = this.squareSize;
                     node.autosize();
-                    String id = node.getId();
-                    int x = Integer.parseInt(id.split("-")[0]);
-                    int y = Integer.parseInt(id.split("-")[1]);
+                    String[] parts = node.getId().split("-");
+                    int x = Integer.parseInt(parts[0]);
+                    int y = Integer.parseInt(parts[1]);
                     node.relocate(x * this.squareSize, y * this.squareSize);
                 } else if (node instanceof Piece) {
                     Piece p = (Piece)node;
