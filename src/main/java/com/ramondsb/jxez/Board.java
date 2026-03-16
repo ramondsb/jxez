@@ -90,7 +90,7 @@ public class Board extends Region {
     }
 
     private void setupPieces() {
-        // Paws
+        // Pawns
         for (int i =0; i < 8; i++) {
             addPiece(PAWN, BLACK, 1, i);
             addPiece(PAWN, WHITE, 6, i);
