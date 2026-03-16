@@ -168,6 +168,7 @@ public class Board extends Region {
         this.container.getChildren().remove(attackedPiece);
         // Move attacking pice to position
         setPieceAtPosition(selectedPiece, pos.getRow(), pos.getColumn());
+        // TODO: currently always returns true — add move validation logic here (e.g. illegal moves should return false)
         return true;
     }
 
