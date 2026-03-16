@@ -90,55 +90,9 @@ public class Piece extends Region {
     }
 
     private Image getRepresentationImage() {
-        Image image = null;
-        switch (this.pieceType) {
-            case KING:
-                if (this.color == Game.Color.BLACK) {
-                    image = new Image("images/b_king_png_128px.png", 50, 50, false, true);
-                } else {
-                    image = new Image("images/w_king_png_128px.png", 50, 50, false, true);
-                }
-                break;
-            case QUEEN:
-                if (this.color == Game.Color.BLACK) {
-                    image = new Image("images/b_queen_png_128px.png", 50, 50, false, true);
-                } else {
-                    image = new Image("images/w_queen_png_128px.png", 50, 50, false, true);
-                }
-                break;
-            case PAWN:
-                if (this.color == Game.Color.BLACK) {
-                    image = new Image("images/b_pawn_png_128px.png", 50, 50, false, true);
-                } else {
-                    image = new Image("images/w_pawn_png_128px.png", 50, 50, false, true);
-                }
-                break;
-
-            case ROOK:
-                if (this.color == Game.Color.BLACK) {
-                    image = new Image("images/b_rook_png_128px.png", 50, 50, false, true);
-                } else {
-                    image = new Image("images/w_rook_png_128px.png", 50, 50, false, true);
-                }
-                break;
-            case BISHOP:
-                if (this.color == Game.Color.BLACK) {
-                    image = new Image("images/b_bishop_png_128px.png", 50, 50, false, true);
-                } else {
-                    image = new Image("images/w_bishop_png_128px.png", 50, 50, false, true);
-                }
-                break;
-            case KNIGHT:
-                if (this.color == Game.Color.BLACK) {
-                    image = new Image("images/b_knight_png_128px.png", 50, 50, false, true);
-                } else {
-                    image = new Image("images/w_knight_png_128px.png", 50, 50, false, true);
-                }
-                break;
-            default:
-                image = new Image("images/b_king_png_128px.png", 50, 50, true, false);
-        }
-        return image;
+        String colorPrefix = this.color == Game.Color.BLACK ? "b" : "w";
+        String pieceName = this.pieceType.name().toLowerCase();
+        return new Image("images/" + colorPrefix + "_" + pieceName + "_png_128px.png", 50, 50, false, true);
     }
 
     @Override
