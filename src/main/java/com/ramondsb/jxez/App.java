@@ -43,8 +43,4 @@ public class App extends Application {
         primaryStage.setScene(scene);
         primaryStage.show();
     }
-
-    public String getGreeting() {
-        return "Hello world.";
-    }
 }
