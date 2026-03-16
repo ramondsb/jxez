@@ -37,13 +37,8 @@ public class App extends Application {
                 BOARD_SIZE,
                 Color.BLACK);
 
-        final double equalFactor = 1.0;
-        primaryStage
-                .minWidthProperty()
-                .bind(scene.heightProperty().multiply(equalFactor));
-        primaryStage
-                .minHeightProperty()
-                .bind(scene.widthProperty().divide(equalFactor));
+        primaryStage.minWidthProperty().bind(scene.heightProperty());
+        primaryStage.minHeightProperty().bind(scene.widthProperty());
 
         primaryStage.setScene(scene);
         primaryStage.show();
